@@ -57,12 +57,67 @@ const moviesData = [
 
 class App extends React.Component {
   state = {
-    movies: moviesData
+    movies: moviesData,
+    title: "",
+    director: "",
+    hasOscars: false,
+    rate: 10
+  };
+
+  // handleTitleChange = event => {
+  //   console.log(event.target.name);
+  //   console.log(event.target.value);
+  //   this.setState({
+  //     title: event.target.value
+  //   });
+  // };
+
+  handleChange = event => {
+    this.setState({
+      [event.target.name]: event.target.value
+    });
+  };
+
+  handleCheckboxChange = event => {
+    this.setState({
+      [event.target.name]: event.target.checked
+    });
   };
 
   render() {
     return (
       <div className="App">
+        <label htmlFor="title">Title: </label>
+        <input
+          id="title"
+          name="title"
+          value={this.state.title}
+          onChange={this.handleChange}
+        />
+        <label htmlFor="director">Director: </label>
+        <input
+          id="director"
+          name="director"
+          value={this.state.director}
+          onChange={this.handleChange}
+        />
+        <label htmlFor="rate">Rating: </label>
+        <input
+          type="number"
+          name="rate"
+          id="rate"
+          value={this.state.rate}
+          onChange={this.handleChange}
+        />
+        <label htmlFor="hasOscars">Has Oscars?</label>
+        <input
+          type="checkbox"
+          name="hasOscars"
+          id="hasOscars"
+          checked={this.state.hasOscars}
+          onChange={this.handleCheckboxChange}
+        />
+        <button onClick={this.handleClick}>Click me!</button>
         <Movies movies={this.state.movies} />
       </div>
     );
