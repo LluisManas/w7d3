@@ -61,7 +61,7 @@ class App extends React.Component {
     title: "",
     director: "",
     hasOscars: false,
-    rate: 10
+    rate: ""
   };
 
   // handleTitleChange = event => {
@@ -84,40 +84,65 @@ class App extends React.Component {
     });
   };
 
+  addMovie = event => {
+    event.preventDefault();
+    // retrieve the info for the movie we want to add
+    const newMovie = {
+      title: this.state.title,
+      director: this.state.director,
+      rate: this.state.rate,
+      hasOscars: this.state.hasOscars,
+      id: this.state.movies.length
+    };
+
+    // add the movie
+    // clear the inputs
+    this.setState({
+      movies: [newMovie, ...this.state.movies],
+      title: "",
+      director: "",
+      rate: "",
+      hasOscars: false
+    });
+  };
+
   render() {
     return (
       <div className="App">
-        <label htmlFor="title">Title: </label>
-        <input
-          id="title"
-          name="title"
-          value={this.state.title}
-          onChange={this.handleChange}
-        />
-        <label htmlFor="director">Director: </label>
-        <input
-          id="director"
-          name="director"
-          value={this.state.director}
-          onChange={this.handleChange}
-        />
-        <label htmlFor="rate">Rating: </label>
-        <input
-          type="number"
-          name="rate"
-          id="rate"
-          value={this.state.rate}
-          onChange={this.handleChange}
-        />
-        <label htmlFor="hasOscars">Has Oscars?</label>
-        <input
-          type="checkbox"
-          name="hasOscars"
-          id="hasOscars"
-          checked={this.state.hasOscars}
-          onChange={this.handleCheckboxChange}
-        />
-        <button onClick={this.handleClick}>Click me!</button>
+        <h1>Movies</h1>
+        <form onSubmit={this.addMovie}>
+          <label htmlFor="title">Title: </label>
+          <input
+            id="title"
+            name="title"
+            value={this.state.title}
+            onChange={this.handleChange}
+          />
+          <label htmlFor="director">Director: </label>
+          <input
+            id="director"
+            name="director"
+            value={this.state.director}
+            onChange={this.handleChange}
+          />
+          <label htmlFor="rate">Rating: </label>
+          <input
+            type="number"
+            name="rate"
+            id="rate"
+            value={this.state.rate}
+            onChange={this.handleChange}
+          />
+          <label htmlFor="hasOscars">Has Oscars?</label>
+          <input
+            type="checkbox"
+            name="hasOscars"
+            id="hasOscars"
+            checked={this.state.hasOscars}
+            onChange={this.handleCheckboxChange}
+          />
+          <button>Click me!</button>
+        </form>
         <Movies movies={this.state.movies} />
       </div>
     );

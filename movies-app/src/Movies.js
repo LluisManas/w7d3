@@ -25,7 +25,6 @@ const Movie = props => {
 const Movies = props => {
   return (
     <>
-      <h1>Movies</h1>
       {props.movies.map(movie => {
         return <Movie key={movie.id} data={movie} />;
       })}
