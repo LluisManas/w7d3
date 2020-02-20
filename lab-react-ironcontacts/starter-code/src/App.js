@@ -1,51 +1,14 @@
 import React, { Component } from "react";
+import ContactsList from "./ContactsList";
+import SearchBar from "./SearchBar";
+
 import "./App.css";
 import contactsJSON from "./contacts.json";
 
-const ContactsList = props => {
-  return (
-    <table>
-      <thead>
-        <tr>
-          <th>Picture</th>
-          <th>Name</th>
-          <th>Popularity</th>
-          <th>Action</th>
-        </tr>
-      </thead>
-      <tbody>
-        {props.contacts.map((contact, i) => {
-          return (
-            <tr key={contact.id}>
-              <td>
-                <img
-                  height="100px"
-                  src={contact.pictureUrl}
-                  alt={contact.name}
-                />
-              </td>
-              <td>{contact.name}</td>
-              <td>{contact.popularity.toFixed(2)}</td>
-              <td>
-                <button
-                  onClick={() => {
-                    props.deleteContact(i);
-                  }}
-                >
-                  Delete
-                </button>
-              </td>
-            </tr>
-          );
-        })}
-      </tbody>
-    </table>
-  );
-};
-
 class App extends Component {
   state = {
-    contacts: contactsJSON.slice(0, 5)
+    contacts: contactsJSON.slice(0, 5),
+    searchText: ""
   };
 
   addRandom = () => {
@@ -122,7 +85,15 @@ class App extends Component {
     });
   };
 
+  updateSearchText = text => {
+    this.setState({
+      searchText: text
+    });
+  };
+
   render() {
+    console.log("APP: ", this.state.searchText);
+
     return (
       <div className="App">
         <h1>IronContacts</h1>
@@ -130,9 +101,15 @@ class App extends Component {
         <button onClick={this.sortByName}>Sort by name</button>
         <button onClick={this.sortByPop}>Sort by popularity</button>
 
+        <SearchBar
+          updateSearchText={this.updateSearchText}
+          search={this.state.searchText}
+        />
+
         <ContactsList
           deleteContact={this.deleteContact}
           contacts={this.state.contacts}
+          search={this.state.searchText}
         />
       </div>
     );
