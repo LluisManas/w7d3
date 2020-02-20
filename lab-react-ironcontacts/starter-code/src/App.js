@@ -10,10 +10,11 @@ const ContactsList = props => {
           <th>Picture</th>
           <th>Name</th>
           <th>Popularity</th>
+          <th>Action</th>
         </tr>
       </thead>
       <tbody>
-        {props.contacts.map(contact => {
+        {props.contacts.map((contact, i) => {
           return (
             <tr key={contact.id}>
               <td>
@@ -25,6 +26,15 @@ const ContactsList = props => {
               </td>
               <td>{contact.name}</td>
               <td>{contact.popularity.toFixed(2)}</td>
+              <td>
+                <button
+                  onClick={() => {
+                    props.deleteContact(i);
+                  }}
+                >
+                  Delete
+                </button>
+              </td>
             </tr>
           );
         })}
@@ -81,12 +91,49 @@ class App extends Component {
   //   });
   // };
 
+  sortByName = () => {
+    const sorted = [...this.state.contacts].sort((a, b) => {
+      return a.name.localeCompare(b.name);
+    });
+
+    this.setState({
+      contacts: sorted
+    });
+  };
+
+  sortByPop = () => {
+    const sorted = [...this.state.contacts].sort((a, b) => {
+      return b.popularity - a.popularity;
+    });
+
+    this.setState({
+      contacts: sorted
+    });
+  };
+
+  deleteContact = index => {
+    console.log("deleteContact", index);
+    // filter the array of contacts to exclude the element at a given index
+    const withoutContact = [...this.state.contacts];
+    withoutContact.splice(index, 1);
+
+    this.setState({
+      contacts: withoutContact
+    });
+  };
+
   render() {
     return (
       <div className="App">
         <h1>IronContacts</h1>
         <button onClick={this.addRandom}>Add Random Contact</button>
-        <ContactsList contacts={this.state.contacts} />
+        <button onClick={this.sortByName}>Sort by name</button>
+        <button onClick={this.sortByPop}>Sort by popularity</button>
+
+        <ContactsList
+          deleteContact={this.deleteContact}
+          contacts={this.state.contacts}
+        />
       </div>
     );
   }
